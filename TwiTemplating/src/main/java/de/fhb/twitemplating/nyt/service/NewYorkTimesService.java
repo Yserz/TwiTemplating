@@ -89,7 +89,7 @@ public class NewYorkTimesService implements NewYorkTimesLocal{
 			} catch (ParseException e) {
 				message.setPublished(null);
 			}
-			message.setAuthor(result.byline.substring(3));
+			message.setAuthor(result.byline);
 			message.setMediaURL(result.getSmallImageURL());
 			messageList.add(message);
 		}
