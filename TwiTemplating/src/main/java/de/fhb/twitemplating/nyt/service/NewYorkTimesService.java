@@ -19,11 +19,7 @@ package de.fhb.twitemplating.nyt.service;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import de.fhb.twitemplating.enitiy.Message;
-import de.fhb.twitemplating.nyt.api.MostPopularQuery;
-import de.fhb.twitemplating.nyt.api.MostPopularSearch;
-import de.fhb.twitemplating.nyt.api.NYTAPIKey;
-import de.fhb.twitemplating.nyt.api.ResourceType;
-import de.fhb.twitemplating.nyt.api.TimePeriod;
+import de.fhb.twitemplating.nyt.api.*;
 import de.fhb.twitemplating.nyt.util.MostPopular;
 import de.fhb.twitemplating.nyt.util.Result;
 import lombok.NoArgsConstructor;
@@ -45,27 +41,32 @@ import java.util.logging.Logger;
 @Stateless
 @Startup
 @NoArgsConstructor
-public class NewYorkTimesService implements NewYorkTimesLocal{
+public class NewYorkTimesService implements NewYorkTimesLocal {
 
-    private final static Logger LOG = Logger.getLogger(NewYorkTimesService.class.getName());
-    public static final String API_KEY = "cfe88cd84c026683a2a1f8fb156b9709:6:67675712";
-    private Date date = new Date();
+	public static final String API_KEY = "cfe88cd84c026683a2a1f8fb156b9709:6:67675712";
+	private final static Logger LOG = Logger.getLogger(NewYorkTimesService.class.getName());
+	private Date date = new Date();
 	private List<Message> messageList;
 
-    @Override
-    public void start() {
-    }
+	@Override
+	public void start() {
+	}
 
-    @Override
-    public void stop() {
-    }
+	@Override
+	public void stop() {
+	}
 
-    @Override
-    public List<Message> getMessages() {
+	@Override
+	public List<Message> getMessages() {
 //		LOG.info("Executing: getMessages()");
-		if (messageList != null && (new Date().getTime() - date.getTime()) < 300000) {
+//		if (messageList != null && (new Date().getTime() - date.getTime()) < 300000) {
+//			return messageList;
+//		}
+// TODO For debugging the site: getting news on time
+		if (messageList != null) {
 			return messageList;
 		}
+
 		Gson gson = new GsonBuilder().create();
 		MostPopular mostPopular;
 		String apiKey = API_KEY;
@@ -82,7 +83,7 @@ public class NewYorkTimesService implements NewYorkTimesLocal{
 			message.setMessage(result.isAbstract);
 			message.setTitle(result.title);
 			message.setSection(result.section);
-            message.setURL(result.url);
+			message.setURL(result.url);
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			try {
 				message.setPublished(sdf.parse(result.published_date));
